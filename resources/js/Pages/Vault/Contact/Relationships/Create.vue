@@ -145,7 +145,7 @@
                     </label>
                   </div>
 
-                  <div v-if="showContactName" class="ps-6">
+                  <div v-if="form.choice === 'name'" class="ps-6">
                     <text-input
                       ref="contactName"
                       v-model="form.first_name"
@@ -166,6 +166,62 @@
                       :maxlength="255"
                       :label="$t('Last name')" />
 
+                    <!-- middle name -->
+                    <text-input
+                      v-if="showMiddleNameField"
+                      :id="'middle_name'"
+                      v-model="form.middle_name"
+                      :class="'mb-5'"
+                      :input-class="'block w-full'"
+                      :required="false"
+                      :maxlength="255"
+                      :label="$t('Middle name')" />
+
+                    <!-- nickname -->
+                    <text-input
+                      v-if="showNicknameField"
+                      :id="'nickname'"
+                      v-model="form.nickname"
+                      :class="'mb-5'"
+                      :input-class="'block w-full'"
+                      :required="false"
+                      :maxlength="255"
+                      :label="$t('Nickname')" />
+
+                    <!-- maiden name -->
+                    <text-input
+                      v-if="showMaidenNameField"
+                      :id="'maiden_name'"
+                      v-model="form.maiden_name"
+                      :class="'mb-5'"
+                      :input-class="'block w-full'"
+                      :required="false"
+                      :maxlength="255"
+                      :label="$t('Maiden name')" />
+
+                    <!-- genders -->
+                    <dropdown
+                      v-if="showGenderField"
+                      v-model="form.gender_id"
+                      :data="data.genders"
+                      :required="false"
+                      :class="'mb-5'"
+                      :placeholder="$t('Choose a value')"
+                      :dropdown-class="'block w-full'"
+                      :label="$t('Gender')" />
+
+                    <!-- pronouns -->
+                    <dropdown
+                      v-if="showPronounField"
+                      v-model="form.pronoun_id"
+                      :data="data.pronouns"
+                      :required="false"
+                      :class="'mb-5'"
+                      :placeholder="$t('Choose a value')"
+                      :dropdown-class="'block w-full'"
+                      :label="$t('Pronoun')" />
+
+                    <!-- other fields -->
                     <div class="mb-4 flex flex-wrap text-xs">
                       <span
                         v-if="!showLastNameField"
@@ -190,6 +246,18 @@
                         class="mb-2 me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                         @click="displayMaidenNameField">
                         {{ $t('+ maiden name') }}
+                      </span>
+                      <span
+                        v-if="data.genders.length > 0 && !showGenderField"
+                        class="mb-2 me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
+                        @click="displayGenderField">
+                        {{ $t('+ gender') }}
+                      </span>
+                      <span
+                        v-if="data.pronouns.length > 0 && !showPronounField"
+                        class="mb-2 me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
+                        @click="displayPronounField">
+                        {{ $t('+ pronoun') }}
                       </span>
                     </div>
                   </div>
@@ -222,79 +290,6 @@
                       :class="'flex-1 border-gray-200 dark:border-gray-700'" />
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div v-if="showMoreContactOptions" class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <!-- middle name -->
-              <text-input
-                v-if="showMiddleNameField"
-                :id="'middle_name'"
-                v-model="form.middle_name"
-                :class="'mb-5'"
-                :input-class="'block w-full'"
-                :required="false"
-                :maxlength="255"
-                :label="$t('Middle name')" />
-
-              <!-- nickname -->
-              <text-input
-                v-if="showNicknameField"
-                :id="'nickname'"
-                v-model="form.nickname"
-                :class="'mb-5'"
-                :input-class="'block w-full'"
-                :required="false"
-                :maxlength="255"
-                :label="$t('Nickname')" />
-
-              <!-- nickname -->
-              <text-input
-                v-if="showMaidenNameField"
-                :id="'maiden_name'"
-                v-model="form.maiden_name"
-                :class="'mb-5'"
-                :input-class="'block w-full'"
-                :required="false"
-                :maxlength="255"
-                :label="$t('Maiden name')" />
-
-              <!-- genders -->
-              <dropdown
-                v-if="showGenderField"
-                v-model="form.gender_id"
-                :data="data.genders"
-                :required="false"
-                :class="'mb-5'"
-                :placeholder="$t('Choose a value')"
-                :dropdown-class="'block w-full'"
-                :label="$t('Gender')" />
-
-              <!-- pronouns -->
-              <dropdown
-                v-if="showPronounField"
-                v-model="form.pronoun_id"
-                :data="data.pronouns"
-                :required="false"
-                :class="'mb-5'"
-                :placeholder="$t('Choose a value')"
-                :dropdown-class="'block w-full'"
-                :label="$t('Pronoun')" />
-
-              <!-- other fields -->
-              <div class="flex flex-wrap text-xs">
-                <span
-                  v-if="data.genders.length > 0 && !showGenderField"
-                  class="mb-2 me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
-                  @click="displayGenderField">
-                  {{ $t('+ gender') }}
-                </span>
-                <span
-                  v-if="data.pronouns.length > 0 && !showPronounField"
-                  class="mb-2 me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
-                  @click="displayPronounField">
-                  {{ $t('+ pronoun') }}
-                </span>
               </div>
             </div>
 
@@ -369,8 +364,6 @@ export default {
     return {
       loadingState: '',
       showRelationshipTypeDetails: false,
-      showMoreContactOptions: false,
-      showContactName: false,
       showLastNameField: false,
       showMiddleNameField: false,
       showNicknameField: false,
@@ -422,18 +415,10 @@ export default {
   methods: {
     displayContactNameField() {
       this.form.choice = 'name';
-      this.showContactName = true;
-      this.showMoreContactOptions = true;
 
       this.$nextTick().then(() => {
         this.$refs.contactName.focus();
       });
-    },
-
-    displayContactSelector() {
-      this.form.choice = 'choice';
-      this.showContactName = false;
-      this.showMoreContactOptions = false;
     },
 
     displayLastNameField() {
@@ -479,11 +464,25 @@ export default {
       this.showRelationshipTypeDetails = true;
     },
 
+    stripFormDataForUnknownName(form) {
+      if (form.choice === 'unknown') {
+        form.first_name = '';
+        form.last_name = '';
+        form.middle_name = '';
+        form.nickname = '';
+        form.maiden_name = '';
+        form.gender_id = '';
+        form.pronoun_id = '';
+      }
+
+      return form;
+    },
+
     submit() {
       this.loadingState = 'loading';
 
       axios
-        .post(this.data.url.store, this.form)
+        .post(this.data.url.store, this.stripFormDataForUnknownName(this.form))
         .then((response) => {
           localStorage.success = this.$t('The relationship has been added');
           this.$inertia.visit(response.data.data);
